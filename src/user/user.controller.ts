@@ -12,8 +12,8 @@ import {
   Put
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { SignUpDto } from './dto/signUp.dto';
-import { SignInDto } from './dto/signIn.dto';
+import { CreatedDto } from './dto/createdUser.dto';
+import { UpdatedDto } from './dto/updatedUser.dto';
 import { UserJwtGurad } from './guards/jwt-user.guard';
 import { UserSelfGuard } from './guards/user-self.guard';
 import { CreateOtpDto } from '../Otp/dto/create-otp.dto';
@@ -25,8 +25,8 @@ export class UserController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  create(@Body() signUpDto: SignUpDto) {
-    return this.userService.create(signUpDto);
+  create(@Body() createDto: CreatedDto) {
+    return this.userService.create(createDto);
   }
 
   @UseGuards(UserJwtGurad)
@@ -46,8 +46,8 @@ export class UserController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() signInDto: SignInDto) {
-    return this.userService.update(id, signInDto);
+  update(@Param('id') id: string, @Body() updatedDto: UpdatedDto) {
+    return this.userService.update(id, updatedDto);
   }
 
   @Delete(':id')

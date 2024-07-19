@@ -19,10 +19,9 @@ export class UserJwtGurad implements CanActivate{
             
         const tokenString = req.headers.authhorization;
 
-        const bayer = tokenString.split(' ')[0];
-        const token = tokenString.split(' ')[1];
+        const [type, token] = tokenString.split(' ');
 
-        if(bayer !== 'Bearer' || !token) {
+        if(type !== 'Bearer' || !token) {
             throw new UnauthorizedException({
                 message: "Foydalanuvchi avtorizatsiyadan o'tmagan",
             });

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
-import { SignUpDto } from './dto/signUp.dto';
-import { SignInDto } from './dto/signIn.dto';
+import { CreatedDto } from './dto/createdUser.dto';
+import { UpdatedDto } from './dto/updatedUser.dto';
 import { User } from './entities/user.entity';
 // import { EmailService } from 'src/mailer/mail.service';
 import { JwtService } from '@nestjs/jwt';
@@ -18,8 +18,8 @@ export class UserService {
     // private readonly otpService: OtpService,
   ){}
 
-  async create(signUpDto: SignUpDto) {
-    const { password, email, ...rest } = signUpDto;
+  async create(createdDto: CreatedDto) {
+    const { password, email, ...rest } = createdDto;
     
     try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,7 +51,7 @@ export class UserService {
   async getAll() {
     const user = await this.userRepository.findAll();
     if(!user) {
-      throw new NotFoundException(`Userlar topilmadi`)
+      throw new NotFoundException(`User not found`)
     }
     return user;
   }
@@ -64,14 +64,15 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, signInDto: SignInDto) {
-    const hashPassword = await bcrypt.hash(signInDto.password, 7);
-    const updatedData = { email: signInDto.email, password: hashPassword }
+  async update(id: string, updatedDto: UpdatedDto) {
+    const hashPassword = await bcrypt.hash(updatedDto.password, 7);
+    const updatedData = { email: updatedDto.email, password: hashPassword }
     const updateduser = await this.userRepository.update(
       updatedData,
       {where: {id}, returning: true},
       );
-    return updateduser;
+    
+    return {updateduser};
   }
 
   async delete(id: string) {

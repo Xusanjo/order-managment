@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignInDto } from 'src/user/dto/signIn.dto';
-import { SignUpDto } from 'src/user/dto/signUp.dto';
+import { UpdatedDto } from 'src/user/dto/updatedUser.dto';
+import { CreatedDto } from 'src/user/dto/createdUser.dto';
 import { CreateOtpDto } from 'src/Otp/dto/create-otp.dto';
 import { RefreshToken } from 'src/token/entities/token.entity';
 import { UserJwtGurad } from 'src/user/guards/jwt-user.guard';
@@ -11,7 +11,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
-  create(@Body() createAuthDto: SignUpDto) {
+  create(@Body() createAuthDto: CreatedDto) {
     return this.authService.signup(createAuthDto);
   }
 
